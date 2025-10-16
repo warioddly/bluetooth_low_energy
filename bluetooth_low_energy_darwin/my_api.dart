@@ -251,6 +251,7 @@ abstract class MyCentralManagerFlutterAPI {
   void onDiscovered(
     MyPeripheralArgs peripheralArgs,
     int rssiArgs,
+    int? txPowerArgs,
     MyAdvertisementArgs advertisementArgs,
   );
   void onConnectionStateChanged(

@@ -318,7 +318,7 @@ final class MyCentralManager extends PlatformCentralManager {
     final peripheral = MyPeripheral(blueZDevice);
     final rssi = blueZDevice.rssi;
     final advertisement = blueZDevice.myAdvertisement;
-    final eventArgs = DiscoveredEventArgs(peripheral, rssi, advertisement);
+    final eventArgs = DiscoveredEventArgs(peripheral, rssi, null, advertisement);
     _discoveredController.add(eventArgs);
   }
 

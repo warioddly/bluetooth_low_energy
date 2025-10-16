@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bluetooth_low_energy/bluetooth_low_energy.dart';
+import 'package:bluetooth_low_energy_example/configs.dart';
 import 'package:bluetooth_low_energy_example/view_models.dart';
 import 'package:bluetooth_low_energy_example/widgets.dart';
 import 'package:clover/clover.dart';
@@ -28,7 +29,7 @@ class CentralManagerView extends StatelessWidget {
                       if (discovering) {
                         await viewModel.stopDiscovery();
                       } else {
-                        await viewModel.startDiscovery();
+                        await viewModel.startDiscovery(serviceUUIDs: [serviceUUID]);
                       }
                     }
                     : null,
@@ -60,6 +61,7 @@ class CentralManagerView extends StatelessWidget {
           final uuid = discovery.peripheral.uuid;
           final name = discovery.advertisement.name;
           final rssi = discovery.rssi;
+          final txPowerLevel = discovery.txPowerLevel;
           return ListTile(
             onTap: () {
               onTapDissovery(context, discovery);
@@ -69,7 +71,7 @@ class CentralManagerView extends StatelessWidget {
             },
             title: Text(name ?? ''),
             subtitle: Text(
-              '$uuid',
+              '${txPowerLevel}dBm $uuid',
               style: theme.textTheme.bodySmall,
               softWrap: false,
               maxLines: 1,

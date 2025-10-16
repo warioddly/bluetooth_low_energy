@@ -167,8 +167,9 @@ final class MyPeripheralManager extends PlatformPeripheralManager
       }
     }
     final settingsArgs = MyAdvertiseSettingsArgs(
-      modeArgs: MyAdvertiseModeArgs.balanced,
+      modeArgs: MyAdvertiseModeArgs.lowLatency,
       connectableArgs: true,
+      txPowerLevelArgs: MyTXPowerLevelArgs.high,
     );
     final advertiseDataArgs = advertisement.toAdvertiseDataArgs();
     final scanResponseArgs = advertisement.toScanResponseArgs();

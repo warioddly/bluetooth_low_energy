@@ -405,9 +405,16 @@ class MyCentralManager(context: Context, binaryMessenger: BinaryMessenger) : MyB
         val peripheralArgs = device.toPeripheralArgs()
         val addressArgs = peripheralArgs.addressArgs
         val rssiArgs = result.rssi.args
+
+        val txPowerLevelArgs: Int? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            result.scanRecord?.txPowerLevel
+        } else {
+            null
+        }
+
         val advertisementArgs = result.toAdvertisementArgs()
         mDevices[addressArgs] = device
-        mAPI.onDiscovered(peripheralArgs, rssiArgs, advertisementArgs) {}
+        mAPI.onDiscovered(peripheralArgs, rssiArgs, txPowerLevelArgs,advertisementArgs) {}
     }
 
     fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {

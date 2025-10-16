@@ -279,6 +279,7 @@ abstract class MyCentralManagerFlutterAPI {
   void onDiscovered(
     MyPeripheralArgs peripheralArgs,
     int rssiArgs,
+    int? txPowerArgs,
     int timestampArgs,
     MyAdvertisementTypeArgs typeArgs,
     MyAdvertisementArgs advertisementArgs,

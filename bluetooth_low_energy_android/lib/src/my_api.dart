@@ -197,6 +197,7 @@ extension ManufacturerSpecificDataX on ManufacturerSpecificData {
 extension AdvertisementX on Advertisement {
   MyAdvertiseDataArgs toAdvertiseDataArgs() {
     return MyAdvertiseDataArgs(
+      includeTXPowerLevelArgs: true,
       serviceUUIDsArgs: serviceUUIDs.map((uuid) => uuid.toArgs()).toList(),
       serviceDataArgs: serviceData.map((uuid, data) {
         final uuidArgs = uuid.toArgs();

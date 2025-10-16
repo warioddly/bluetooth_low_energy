@@ -267,6 +267,7 @@ final class MyCentralManager extends PlatformCentralManager
   void onDiscovered(
     MyPeripheralArgs peripheralArgs,
     int rssiArgs,
+    int? txPowerArgs,
     int timestampArgs,
     MyAdvertisementTypeArgs typeArgs,
     MyAdvertisementArgs advertisementArgs,
@@ -282,7 +283,7 @@ final class MyCentralManager extends PlatformCentralManager
       final peripheral = peripheralArgs.toPeripheral();
       final rssi = rssiArgs;
       final advertisement = advertisementArgs.toAdvertisement();
-      final eventArgs = DiscoveredEventArgs(peripheral, rssi, advertisement);
+      final eventArgs = DiscoveredEventArgs(peripheral, rssi, txPowerArgs, advertisement);
       _discoveredController.add(eventArgs);
     } else {
       final oldDiscoveryArgs = _discoveriesArgs.remove(addressArgs);
@@ -335,7 +336,7 @@ final class MyCentralManager extends PlatformCentralManager
           serviceData: serviceData,
           manufacturerSpecificData: manufacturerSpecificData,
         );
-        final eventArgs = DiscoveredEventArgs(peripheral, rssi, advertisement);
+        final eventArgs = DiscoveredEventArgs(peripheral, rssi, txPowerArgs, advertisement);
         _discoveredController.add(eventArgs);
       }
     }

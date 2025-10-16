@@ -246,13 +246,14 @@ final class MyCentralManager extends PlatformCentralManager
   void onDiscovered(
     MyPeripheralArgs peripheralArgs,
     int rssiArgs,
+    int? txPowerArgs,
     MyAdvertisementArgs advertisementArgs,
   ) {
     final uuidArgs = peripheralArgs.uuidArgs;
-    logger.info('onDiscovered: $uuidArgs - $rssiArgs, $advertisementArgs');
+    logger.info('onDiscovered: $uuidArgs - $rssiArgs - $txPowerArgs, $advertisementArgs');
     final peripheral = peripheralArgs.toPeripheral();
     final advertisement = advertisementArgs.toAdvertisement();
-    final eventArgs = DiscoveredEventArgs(peripheral, rssiArgs, advertisement);
+    final eventArgs = DiscoveredEventArgs(peripheral, rssiArgs, txPowerArgs, advertisement);
     _discoveredController.add(eventArgs);
   }
 

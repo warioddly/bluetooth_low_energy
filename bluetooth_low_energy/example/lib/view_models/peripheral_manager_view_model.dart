@@ -3,8 +3,10 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:bluetooth_low_energy/bluetooth_low_energy.dart';
+import 'package:bluetooth_low_energy_example/configs.dart';
 import 'package:bluetooth_low_energy_example/models.dart';
 import 'package:clover/clover.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:logging/logging.dart';
 
 class PeripheralManagerViewModel extends ViewModel {
@@ -138,7 +140,8 @@ class PeripheralManagerViewModel extends ViewModel {
     );
     await _manager.addService(service);
     final advertisement = Advertisement(
-      name: Platform.isWindows ? null : 'BLE-12138',
+      serviceUUIDs: [serviceUUID],
+      name: Platform.isWindows ? null : 'BLE-${UniqueKey().hashCode}',
       manufacturerSpecificData:
           Platform.isIOS || Platform.isMacOS
               ? []

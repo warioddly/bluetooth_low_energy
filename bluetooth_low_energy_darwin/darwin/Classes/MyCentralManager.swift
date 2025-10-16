@@ -301,11 +301,14 @@ class MyCentralManager: MyCentralManagerHostAPI {
         let uuidArgs = peripheralArgs.uuidArgs
         let rssiArgs = rssi.int64Value
         let advertisementArgs = advertisementData.toAdvertisementArgs()
+    
+        let txPowerArgs: Int64? = (advertisementData[CBAdvertisementDataTxPowerLevelKey] as? NSNumber)?.int64Value
+        
         if peripheral.delegate == nil {
             peripheral.delegate = peripheralDelegate
         }
         mPeripherals[uuidArgs] = peripheral
-        mAPI.onDiscovered(peripheralArgs: peripheralArgs, rssiArgs: rssiArgs, advertisementArgs: advertisementArgs) {_ in }
+        mAPI.onDiscovered(peripheralArgs: peripheralArgs, rssiArgs: rssiArgs, txPowerArgs: txPowerArgs, advertisementArgs: advertisementArgs) {_ in }
     }
     
     func didConnect(central: CBCentralManager, peripheral: CBPeripheral) {
