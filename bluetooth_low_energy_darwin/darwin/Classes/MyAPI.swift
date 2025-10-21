@@ -124,6 +124,26 @@ extension MyAdvertisementArgs {
             let serviceUUIDs = serviceUUIDsArgs.map { serviceUUIDArgs in serviceUUIDArgs!.toCBUUID() }
             advertisement[CBAdvertisementDataServiceUUIDsKey] = serviceUUIDs
         }
+        if let manufacturerData = manufacturerData {
+            var manufData = Data()
+            
+            // manufacturerId (UInt16, little endian)
+            var manufacturerIdLE = manufacturerData.manufacturerId.littleEndian
+            withUnsafeBytes(of: &manufacturerIdLE) { bytes in
+                manufData.append(contentsOf: bytes)
+            }
+            
+            // payload — добавим слово "Imankadyr"
+            if let payloadData = "Imankadyr".data(using: .utf8) {
+                manufData.append(payloadData)
+            }
+            
+            // Добавляем в advertisementData
+            advertisementData[CBAdvertisementDataManufacturerDataKey] = manufData
+        }
+        
+        print("AdvertisementData: \(advertisementData)")
+
         return advertisement
     }
 }
