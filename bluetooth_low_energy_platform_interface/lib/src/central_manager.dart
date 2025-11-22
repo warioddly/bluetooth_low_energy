@@ -18,13 +18,14 @@ final class DiscoveredEventArgs extends EventArgs {
   /// The rssi of the peripheral.
   final int rssi;
 
-  final int? txPowerLevel;
+  // The tx power level of the peripheral, may be null.
+  final int? txPower;
 
   /// The advertisement of the peripheral.
   final Advertisement advertisement;
 
   /// Constructs a [DiscoveredEventArgs].
-  DiscoveredEventArgs(this.peripheral, this.rssi, this.txPowerLevel, this.advertisement);
+  DiscoveredEventArgs(this.peripheral, this.rssi, this.txPower, this.advertisement);
 }
 
 /// The peripheral connection state cahnged event arguments.

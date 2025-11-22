@@ -302,7 +302,13 @@ class MyCentralManager: MyCentralManagerHostAPI {
         let rssiArgs = rssi.int64Value
         let advertisementArgs = advertisementData.toAdvertisementArgs()
     
-        let txPowerArgs: Int64? = (advertisementData[CBAdvertisementDataTxPowerLevelKey] as? NSNumber)?.int64Value
+        let txPowerArgs: Int64? = {
+            if let txPower = advertisementData[CBAdvertisementDataTxPowerLevelKey] as? NSNumber {
+                return txPower.int64Value
+            } else {
+                return nil
+            }
+        }()
         
         if peripheral.delegate == nil {
             peripheral.delegate = peripheralDelegate

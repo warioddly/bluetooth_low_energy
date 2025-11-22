@@ -407,7 +407,12 @@ class MyCentralManager(context: Context, binaryMessenger: BinaryMessenger) : MyB
         val rssiArgs = result.rssi.args
 
         val txPowerArgs: Int? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            result.scanRecord?.txPowerLevel
+            val txPower = result.txPower
+            if (txPower != Int.MIN_VALUE) {
+                txPower.args
+            } else {
+                null
+            }
         } else {
             null
         }
