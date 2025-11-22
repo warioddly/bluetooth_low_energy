@@ -1,4 +1,5 @@
 {
   "dart.flutterSdkPath": ".fvm/versions/3.29.3",
-  "yaml.format.singleQuote": true
+  "yaml.format.singleQuote": true,
+  "dart.mcpServer": true,
 }

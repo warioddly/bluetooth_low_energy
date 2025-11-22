@@ -61,7 +61,7 @@ class CentralManagerView extends StatelessWidget {
           final uuid = discovery.peripheral.uuid;
           final name = discovery.advertisement.name;
           final rssi = discovery.rssi;
-          final txPowerLevel = discovery.txPowerLevel;
+          final txPower = discovery.txPower;
           return ListTile(
             onTap: () {
               onTapDissovery(context, discovery);
@@ -71,7 +71,7 @@ class CentralManagerView extends StatelessWidget {
             },
             title: Text(name ?? ''),
             subtitle: Text(
-              '${txPowerLevel}dBm $uuid',
+              '${txPower}dBm $uuid',
               style: theme.textTheme.bodySmall,
               softWrap: false,
               maxLines: 1,
@@ -89,16 +89,11 @@ class CentralManagerView extends StatelessWidget {
         itemCount: discoveries.length,
       );
     } else {
-      return Center(
-        child: Text('$state', style: Theme.of(context).textTheme.titleMedium),
-      );
+      return Center(child: Text('$state', style: Theme.of(context).textTheme.titleMedium));
     }
   }
 
-  void onTapDissovery(
-    BuildContext context,
-    DiscoveredEventArgs discovery,
-  ) async {
+  void onTapDissovery(BuildContext context, DiscoveredEventArgs discovery) async {
     final viewModel = ViewModel.of<CentralManagerViewModel>(context);
     if (viewModel.discovering) {
       await viewModel.stopDiscovery();
@@ -110,10 +105,7 @@ class CentralManagerView extends StatelessWidget {
     context.go('/central/$uuid');
   }
 
-  void onLongPressDiscovery(
-    BuildContext context,
-    DiscoveredEventArgs discovery,
-  ) async {
+  void onLongPressDiscovery(BuildContext context, DiscoveredEventArgs discovery) async {
     await showModalBottomSheet(
       context: context,
       builder: (context) {
