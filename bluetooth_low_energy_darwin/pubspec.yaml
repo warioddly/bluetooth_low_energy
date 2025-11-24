@@ -18,7 +18,11 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  bluetooth_low_energy_platform_interface: ^6.1.0
+  bluetooth_low_energy_platform_interface:
+    git:
+      url: https://github.com/warioddly/bluetooth_low_energy.git
+      path: bluetooth_low_energy_platform_interface
+      ref: master
 
 dev_dependencies:
   flutter_test:

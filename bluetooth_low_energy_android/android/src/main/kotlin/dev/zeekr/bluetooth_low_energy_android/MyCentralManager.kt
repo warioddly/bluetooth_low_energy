@@ -408,8 +408,8 @@ class MyCentralManager(context: Context, binaryMessenger: BinaryMessenger) : MyB
 
         val txPowerArgs: Int? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val txPower = result.txPower
-            if (txPower != Int.MIN_VALUE) {
-                txPower.args
+            if (txPower.toLong() != Int.MIN_VALUE.toLong()) {
+                txPower
             } else {
                 null
             }
