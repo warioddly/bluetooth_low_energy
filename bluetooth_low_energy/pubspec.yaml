@@ -21,17 +21,14 @@ dependencies:
     git:
       url: https://github.com/warioddly/bluetooth_low_energy.git
       path: bluetooth_low_energy_platform_interface
-      ref: master
   bluetooth_low_energy_android:
     git:
       url: https://github.com/warioddly/bluetooth_low_energy.git
       path: bluetooth_low_energy_android
-      ref: master
   bluetooth_low_energy_darwin:
     git:
       url: https://github.com/warioddly/bluetooth_low_energy.git
       path: bluetooth_low_energy_darwin
-      ref: master
 
 dev_dependencies:
   flutter_test:
