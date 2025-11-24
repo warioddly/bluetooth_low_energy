@@ -291,19 +291,19 @@ final class MyCentralManager extends PlatformCentralManager implements MyCentral
     final servicesArgs = await _api
         .discoverServices(uuidArgs)
         .then((args) => args.cast<MyGATTServiceArgs>());
-    // for (var serviceArgs in servicesArgs) {
-    //   final hashCodeArgs = serviceArgs.hashCodeArgs;
-    //   final includedServicesArgs = await _discoverIncludedServices(
-    //     uuidArgs,
-    //     hashCodeArgs,
-    //   );
-    //   serviceArgs.includedServicesArgs = includedServicesArgs;
-    //   final characteristicsArgs = await _discoverCharacteristics(
-    //     uuidArgs,
-    //     hashCodeArgs,
-    //   );
-    //   serviceArgs.characteristicsArgs = characteristicsArgs;
-    // }
+    for (var serviceArgs in servicesArgs) {
+      final hashCodeArgs = serviceArgs.hashCodeArgs;
+      // final includedServicesArgs = await _discoverIncludedServices(
+      //   uuidArgs,
+      //   hashCodeArgs,
+      // );
+      // serviceArgs.includedServicesArgs = includedServicesArgs;
+      final characteristicsArgs = await _discoverCharacteristics(
+        uuidArgs,
+        hashCodeArgs,
+      );
+      serviceArgs.characteristicsArgs = characteristicsArgs;
+    }
     return servicesArgs;
   }
 
