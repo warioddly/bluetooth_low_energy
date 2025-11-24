@@ -31,7 +31,7 @@ dependencies:
     git:
       url: https://github.com/warioddly/bluetooth_low_energy.git
       path: bluetooth_low_energy_darwin
-      ref: master
+      ref: a1965d2a46024810d784f93bc9c3bf38f5d6af31
 
 dev_dependencies:
   flutter_test:
