@@ -22,6 +22,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.ParcelUuid
 import android.provider.Settings
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
@@ -406,7 +407,7 @@ class MyCentralManager(context: Context, binaryMessenger: BinaryMessenger) : MyB
         val addressArgs = peripheralArgs.addressArgs
         val rssiArgs = result.rssi.args
 
-        val txPowerArgs: Int? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val txPowerArgs: Long? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val txPower = result.txPower
             if (txPower.toLong() != Int.MIN_VALUE.toLong()) {
                 txPower
