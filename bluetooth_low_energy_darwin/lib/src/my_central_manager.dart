@@ -8,16 +8,13 @@ import 'my_api.dart';
 import 'my_api.g.dart';
 import 'my_gatt.dart';
 
-final class MyCentralManager extends PlatformCentralManager
-    implements MyCentralManagerFlutterAPI {
+final class MyCentralManager extends PlatformCentralManager implements MyCentralManagerFlutterAPI {
   final MyCentralManagerHostAPI _api;
-  final StreamController<BluetoothLowEnergyStateChangedEventArgs>
-  _stateChangedController;
+  final StreamController<BluetoothLowEnergyStateChangedEventArgs> _stateChangedController;
   final StreamController<DiscoveredEventArgs> _discoveredController;
   final StreamController<PeripheralConnectionStateChangedEventArgs>
   _connectionStateChangedController;
-  final StreamController<GATTCharacteristicNotifiedEventArgs>
-  _characteristicNotifiedController;
+  final StreamController<GATTCharacteristicNotifiedEventArgs> _characteristicNotifiedController;
 
   BluetoothLowEnergyState _state;
 
@@ -37,8 +34,8 @@ final class MyCentralManager extends PlatformCentralManager
   @override
   Stream<DiscoveredEventArgs> get discovered => _discoveredController.stream;
   @override
-  Stream<PeripheralConnectionStateChangedEventArgs>
-  get connectionStateChanged => _connectionStateChangedController.stream;
+  Stream<PeripheralConnectionStateChangedEventArgs> get connectionStateChanged =>
+      _connectionStateChangedController.stream;
   @override
   Stream<PeripheralMTUChangedEventArgs> get mtuChanged =>
       throw UnsupportedError('mtuChanged is not supported on Darwin.');
@@ -63,16 +60,13 @@ final class MyCentralManager extends PlatformCentralManager
       logger.info('showAppSettings');
       await _api.showAppSettings();
     } else {
-      throw UnsupportedError(
-        'showAppSettings is not supported on ${Platform.operatingSystem}.',
-      );
+      throw UnsupportedError('showAppSettings is not supported on ${Platform.operatingSystem}.');
     }
   }
 
   @override
   Future<void> startDiscovery({List<UUID>? serviceUUIDs}) async {
-    final serviceUUIDsArgs =
-        serviceUUIDs?.map((uuid) => uuid.toArgs()).toList() ?? [];
+    final serviceUUIDsArgs = serviceUUIDs?.map((uuid) => uuid.toArgs()).toList() ?? [];
     logger.info('startDiscovery: $serviceUUIDsArgs');
     await _api.startDiscovery(serviceUUIDsArgs);
   }
@@ -88,10 +82,7 @@ final class MyCentralManager extends PlatformCentralManager
     logger.info('retrieveConnectedPeripherals');
     final peripheralsArgs = await _api.retrieveConnectedPeripherals();
     final peripherals =
-        peripheralsArgs
-            .cast<MyPeripheralArgs>()
-            .map((args) => args.toPeripheral())
-            .toList();
+        peripheralsArgs.cast<MyPeripheralArgs>().map((args) => args.toPeripheral()).toList();
     return peripherals;
   }
 
@@ -122,10 +113,7 @@ final class MyCentralManager extends PlatformCentralManager
     final uuidArgs = peripheral.uuid.toArgs();
     final typeArgs = type.toArgs();
     logger.info('getMaximumWriteLength: $uuidArgs - $typeArgs');
-    final maximumWriteLength = await _api.getMaximumWriteLength(
-      uuidArgs,
-      typeArgs,
-    );
+    final maximumWriteLength = await _api.getMaximumWriteLength(uuidArgs, typeArgs);
     return maximumWriteLength;
   }
 
@@ -175,9 +163,7 @@ final class MyCentralManager extends PlatformCentralManager
     final hashCodeArgs = characteristic.hashCode;
     final valueArgs = value;
     final typeArgs = type.toArgs();
-    logger.info(
-      'writeCharacteristic: $uuidArgs.$hashCodeArgs - $valueArgs, $typeArgs',
-    );
+    logger.info('writeCharacteristic: $uuidArgs.$hashCodeArgs - $valueArgs, $typeArgs');
     await _api.writeCharacteristic(uuidArgs, hashCodeArgs, valueArgs, typeArgs);
   }
 
@@ -193,17 +179,12 @@ final class MyCentralManager extends PlatformCentralManager
     final uuidArgs = peripheral.uuid.toArgs();
     final hashCodeArgs = characteristic.hashCode;
     final stateArgs = state;
-    logger.info(
-      'setCharacteristicNotifyState: $uuidArgs.$hashCodeArgs - $stateArgs',
-    );
+    logger.info('setCharacteristicNotifyState: $uuidArgs.$hashCodeArgs - $stateArgs');
     await _api.setCharacteristicNotifyState(uuidArgs, hashCodeArgs, stateArgs);
   }
 
   @override
-  Future<Uint8List> readDescriptor(
-    Peripheral peripheral,
-    GATTDescriptor descriptor,
-  ) async {
+  Future<Uint8List> readDescriptor(Peripheral peripheral, GATTDescriptor descriptor) async {
     if (descriptor is! MyGATTDescriptor) {
       throw TypeError();
     }
@@ -258,18 +239,12 @@ final class MyCentralManager extends PlatformCentralManager
   }
 
   @override
-  void onConnectionStateChanged(
-    MyPeripheralArgs peripheralArgs,
-    MyConnectionStateArgs stateArgs,
-  ) {
+  void onConnectionStateChanged(MyPeripheralArgs peripheralArgs, MyConnectionStateArgs stateArgs) {
     final uuidArgs = peripheralArgs.uuidArgs;
     logger.info('onConnectionStateChanged: $uuidArgs - $stateArgs');
     final peripheral = peripheralArgs.toPeripheral();
     final state = stateArgs.toState();
-    final eventArgs = PeripheralConnectionStateChangedEventArgs(
-      peripheral,
-      state,
-    );
+    final eventArgs = PeripheralConnectionStateChangedEventArgs(peripheral, state);
     _connectionStateChangedController.add(eventArgs);
   }
 
@@ -281,16 +256,10 @@ final class MyCentralManager extends PlatformCentralManager
   ) {
     final uuidArgs = peripheralArgs.uuidArgs;
     final hashCodeArgs = characteristicArgs.hashCodeArgs;
-    logger.info(
-      'onCharacteristicNotified: $uuidArgs.$hashCodeArgs - $valueArgs',
-    );
+    logger.info('onCharacteristicNotified: $uuidArgs.$hashCodeArgs - $valueArgs');
     final peripheral = peripheralArgs.toPeripheral();
     final characteristic = characteristicArgs.toCharacteristic();
-    final eventArgs = GATTCharacteristicNotifiedEventArgs(
-      peripheral,
-      characteristic,
-      valueArgs,
-    );
+    final eventArgs = GATTCharacteristicNotifiedEventArgs(peripheral, characteristic, valueArgs);
     _characteristicNotifiedController.add(eventArgs);
   }
 
@@ -322,19 +291,19 @@ final class MyCentralManager extends PlatformCentralManager
     final servicesArgs = await _api
         .discoverServices(uuidArgs)
         .then((args) => args.cast<MyGATTServiceArgs>());
-    for (var serviceArgs in servicesArgs) {
-      final hashCodeArgs = serviceArgs.hashCodeArgs;
-      final includedServicesArgs = await _discoverIncludedServices(
-        uuidArgs,
-        hashCodeArgs,
-      );
-      serviceArgs.includedServicesArgs = includedServicesArgs;
-      final characteristicsArgs = await _discoverCharacteristics(
-        uuidArgs,
-        hashCodeArgs,
-      );
-      serviceArgs.characteristicsArgs = characteristicsArgs;
-    }
+    // for (var serviceArgs in servicesArgs) {
+    //   final hashCodeArgs = serviceArgs.hashCodeArgs;
+    //   final includedServicesArgs = await _discoverIncludedServices(
+    //     uuidArgs,
+    //     hashCodeArgs,
+    //   );
+    //   serviceArgs.includedServicesArgs = includedServicesArgs;
+    //   final characteristicsArgs = await _discoverCharacteristics(
+    //     uuidArgs,
+    //     hashCodeArgs,
+    //   );
+    //   serviceArgs.characteristicsArgs = characteristicsArgs;
+    // }
     return servicesArgs;
   }
 
@@ -348,15 +317,9 @@ final class MyCentralManager extends PlatformCentralManager
         .then((args) => args.cast<MyGATTServiceArgs>());
     for (var serviceArgs in servicesArgs) {
       final hashCodeArgs = serviceArgs.hashCodeArgs;
-      final includedServicesArgs = await _discoverIncludedServices(
-        uuidArgs,
-        hashCodeArgs,
-      );
+      final includedServicesArgs = await _discoverIncludedServices(uuidArgs, hashCodeArgs);
       serviceArgs.includedServicesArgs = includedServicesArgs;
-      final characteristicsArgs = await _discoverCharacteristics(
-        uuidArgs,
-        hashCodeArgs,
-      );
+      final characteristicsArgs = await _discoverCharacteristics(uuidArgs, hashCodeArgs);
       serviceArgs.characteristicsArgs = characteristicsArgs;
     }
     return servicesArgs;
@@ -372,19 +335,13 @@ final class MyCentralManager extends PlatformCentralManager
         .then((args) => args.cast<MyGATTCharacteristicArgs>());
     for (var characteristicArgs in characteristicsArgs) {
       final hashCodeArgs = characteristicArgs.hashCodeArgs;
-      final descriptorsArgs = await _discoverDescriptors(
-        uuidArgs,
-        hashCodeArgs,
-      );
+      final descriptorsArgs = await _discoverDescriptors(uuidArgs, hashCodeArgs);
       characteristicArgs.descriptorsArgs = descriptorsArgs;
     }
     return characteristicsArgs;
   }
 
-  Future<List<MyGATTDescriptorArgs>> _discoverDescriptors(
-    String uuidArgs,
-    int hashCodeArgs,
-  ) async {
+  Future<List<MyGATTDescriptorArgs>> _discoverDescriptors(String uuidArgs, int hashCodeArgs) async {
     logger.info('discoverDescriptors: $uuidArgs.$hashCodeArgs');
     final descriptorsArgs = await _api
         .discoverDescriptors(uuidArgs, hashCodeArgs)
