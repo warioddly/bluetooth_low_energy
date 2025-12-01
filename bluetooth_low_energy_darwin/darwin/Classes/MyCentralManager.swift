@@ -19,7 +19,11 @@ import FlutterMacOS
 class MyCentralManager: MyCentralManagerHostAPI {
     private let mAPI: MyCentralManagerFlutterAPI
     
-    private lazy var mCentralManager = CBCentralManager()
+    private lazy var mCentralManager = CBCentralManager(
+        delegate: mCentralManagerDelegate,
+        queue: nil,
+        options: [CBCentralManagerOptionShowPowerAlertKey: 0]
+    )
     private lazy var mCentralManagerDelegate = MyCentralManagerDelegate(centralManager: self)
     private lazy var peripheralDelegate = MyPeripheralDelegate(centralManager: self)
     
