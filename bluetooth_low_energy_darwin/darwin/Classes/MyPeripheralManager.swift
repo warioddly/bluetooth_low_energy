@@ -19,7 +19,11 @@ import FlutterMacOS
 class MyPeripheralManager: MyPeripheralManagerHostAPI {
     private let mAPI: MyPeripheralManagerFlutterAPI
     
-    private lazy var mPeripheralManager = CBPeripheralManager()
+    private lazy var mPeripheralManager = CBPeripheralManager(
+        delegate: mPeripheralManagerDelegate,
+        queue: nil,
+        options: [CBPeripheralManagerOptionShowPowerAlertKey: 0]
+    )
     private lazy var mPeripheralManagerDelegate = MyPeripheralManagerDelegate(peripheralManager: self)
     
     private var mServicesArgs: [Int: MyMutableGATTServiceArgs]
