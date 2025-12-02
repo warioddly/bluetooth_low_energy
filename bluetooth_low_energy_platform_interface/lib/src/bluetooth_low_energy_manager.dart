@@ -1,4 +1,4 @@
-import 'package:hybrid_logging/hybrid_logging.dart';
+import 'package:bluetooth_low_energy_platform_interface/src/logger.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'bluetooth_low_energy_state.dart';

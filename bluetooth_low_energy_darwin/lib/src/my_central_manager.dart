@@ -298,32 +298,29 @@ final class MyCentralManager extends PlatformCentralManager implements MyCentral
       //   hashCodeArgs,
       // );
       // serviceArgs.includedServicesArgs = includedServicesArgs;
-      final characteristicsArgs = await _discoverCharacteristics(
-        uuidArgs,
-        hashCodeArgs,
-      );
-      serviceArgs.characteristicsArgs = characteristicsArgs;
-    }
-    return servicesArgs;
-  }
-
-  Future<List<MyGATTServiceArgs>> _discoverIncludedServices(
-    String uuidArgs,
-    int hashCodeArgs,
-  ) async {
-    logger.info('discoverIncludedServices: $uuidArgs.$hashCodeArgs');
-    final servicesArgs = await _api
-        .discoverIncludedServices(uuidArgs, hashCodeArgs)
-        .then((args) => args.cast<MyGATTServiceArgs>());
-    for (var serviceArgs in servicesArgs) {
-      final hashCodeArgs = serviceArgs.hashCodeArgs;
-      final includedServicesArgs = await _discoverIncludedServices(uuidArgs, hashCodeArgs);
-      serviceArgs.includedServicesArgs = includedServicesArgs;
       final characteristicsArgs = await _discoverCharacteristics(uuidArgs, hashCodeArgs);
       serviceArgs.characteristicsArgs = characteristicsArgs;
     }
     return servicesArgs;
   }
+
+  // Future<List<MyGATTServiceArgs>> _discoverIncludedServices(
+  //   String uuidArgs,
+  //   int hashCodeArgs,
+  // ) async {
+  //   logger.info('discoverIncludedServices: $uuidArgs.$hashCodeArgs');
+  //   final servicesArgs = await _api
+  //       .discoverIncludedServices(uuidArgs, hashCodeArgs)
+  //       .then((args) => args.cast<MyGATTServiceArgs>());
+  //   for (var serviceArgs in servicesArgs) {
+  //     final hashCodeArgs = serviceArgs.hashCodeArgs;
+  //     final includedServicesArgs = await _discoverIncludedServices(uuidArgs, hashCodeArgs);
+  //     serviceArgs.includedServicesArgs = includedServicesArgs;
+  //     final characteristicsArgs = await _discoverCharacteristics(uuidArgs, hashCodeArgs);
+  //     serviceArgs.characteristicsArgs = characteristicsArgs;
+  //   }
+  //   return servicesArgs;
+  // }
 
   Future<List<MyGATTCharacteristicArgs>> _discoverCharacteristics(
     String uuidArgs,
